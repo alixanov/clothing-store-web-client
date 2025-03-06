@@ -1,0 +1,53 @@
+.debt-container {
+    width: 100%;
+    padding: 20px;
+}
+
+.ant-table {
+    width: 100%;
+}
+
+
+.debt-container >  .navbar {
+    margin-bottom: 20px;
+}
+
+/* debt.css */
+
+/* Select va option stilini moslashtirish uchun */
+.ant-select {
+    width: 200px;
+    margin-left: 10px;
+}
+.ant-table-thead  th{
+    background-color: #1677FF !important;
+    color: white !important;
+}
+.ant-select-selector {
+    background-color: #f0f0f0; /* Kul rang fon */
+    border: 1px solid #d9d9d9; /* Chiziq rangi */
+    border-radius: 5px; /* Burchaklarni yumaloqlash */
+    height: 40px; /* Balandlik */
+    display: flex;
+    align-items: center;
+}
+
+.ant-select-arrow {
+    color: #000; /* Strelka rangi */
+}
+
+/* Option uchun stil */
+.ant-select-item-option {
+    padding: 8px 16px;
+    width: 100%;
+}
+
+.ant-select-item-option-selected {
+    background-color: #1890ff !important; /* Tanlangan element uchun rang */
+    color: #fff !important;
+}
+
+.ant-select-item-option-active {
+    background-color: #e6f7ff; /* Hover qilingan element foni */
+    color: #1890ff;
+}

@@ -1,0 +1,35 @@
+.page-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* background-color: red; */
+}
+
+
+.page-header > h1 {
+  font-size: 20px;
+  color: #1677FF;
+  font-weight: 600;
+}
+
+.page-header__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+.page-header__actions > button {
+  height: 30px;
+  padding: 0 15px;
+  background-color: #1677FF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.page-header__actions > button:active {
+  background-color: #1677FF;
+}
