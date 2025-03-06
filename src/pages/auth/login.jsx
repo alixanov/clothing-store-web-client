@@ -1,14 +1,16 @@
-import React, { memo } from "react";
+import React, { useState, memo } from "react";
 import "./login.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const Login = memo(() => {
+  const [loading, setLoading] = useState(false); // Состояние для спинера
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const value = Object.fromEntries(new FormData(e.target));
+    setLoading(true); // Показываем спинер
 
     try {
       await axios
@@ -19,24 +21,18 @@ export const Login = memo(() => {
           const role = res.data.role;
           localStorage.setItem("access_token", JSON.stringify(token));
           localStorage.setItem("role", role);
-          window.location.reload()
+          window.location.reload();
         });
-      // if ((token, role)) {
-      //   localStorage.setItem("access_token", JSON.stringify(token));
-      //   localStorage.setItem("role", role);
-      //   window.location.reload();
-      // } else {
-      //   console.error("Javobda kerakli ma'lumotlar mavjud emas.");
-      // }
     } catch (error) {
       console.error("API xatosi:", error.response?.data || error.message);
+    } finally {
+      setLoading(false); // Скрываем спинер
     }
   };
 
   return (
     <div className="login">
       <form className="login-form" onSubmit={handleSubmit}>
-        {/* <h1>Stomatologiya Admin</h1> */}
         <label>
           <input
             type="text"
@@ -51,7 +47,13 @@ export const Login = memo(() => {
         </label>
 
         <label>
-          <input type="submit" value="Kirish" />
+          <button type="submit" disabled={loading}>
+            {loading ? (
+              <div className="spinner"></div>
+            ) : (
+              "Kirish"
+            )}
+          </button>
         </label>
       </form>
     </div>
