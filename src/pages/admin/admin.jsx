@@ -1,3 +1,4 @@
+
 import "./admin.css";
 import { Table } from "../../components/table/table";
 import {
@@ -88,17 +89,22 @@ export const Admin = () => {
     }
   }, [barcodeValue]);
 
+  const parseDecimal = (value) => {
+    // Replace commas with periods and parse as float
+    return parseFloat(value.replace(",", "."));
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const data = {
       brCode: brCodeRef.current.value,
       name: nameRef.current.value,
-      purchasePriceSum: parseFloat(purchasePriceSumRef.current.value), // Use parseFloat
-      purchasePriceDollar: parseFloat(purchasePriceDollarRef.current.value), // Use parseFloat
-      middlePriceSum: parseFloat(middlePriceSumRef.current.value), // Use parseFloat
-      middlePriceDollar: parseFloat(middlePriceDollarRef.current.value), // Use parseFloat
-      sellingPriceSum: parseFloat(sellingPriceSumRef.current.value), // Use parseFloat
-      sellingPriceDollar: parseFloat(sellingPriceDollarRef.current.value), // Use parseFloat
+      purchasePriceSum: parseDecimal(purchasePriceSumRef.current.value), // Use custom function
+      purchasePriceDollar: parseDecimal(purchasePriceDollarRef.current.value), // Use custom function
+      middlePriceSum: parseDecimal(middlePriceSumRef.current.value), // Use custom function
+      middlePriceDollar: parseDecimal(middlePriceDollarRef.current.value), // Use custom function
+      sellingPriceSum: parseDecimal(sellingPriceSumRef.current.value), // Use custom function
+      sellingPriceDollar: parseDecimal(sellingPriceDollarRef.current.value), // Use custom function
       quantity: parseFloat(quantityRef.current.value),
       category: categoryRef.current.value,
       artikul: new Date(),
@@ -459,6 +465,7 @@ export const Admin = () => {
                   autoComplete="off"
                 />
               </label>
+
               <label>
                 <span>Kirim soni</span>
                 <input

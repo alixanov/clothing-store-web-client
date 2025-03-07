@@ -62,18 +62,27 @@ export default function Debt() {
         </div>
       ),
     },
+    // {
+    //   title: "Valyuta",
+    //   key: "currency",
+    //   render: (_, record) => (
+    //     <p>{record.currency === "sum" ? "so'm" : "$"}</p> // Display currency symbol
+    //   ),
+    // },
     {
       title: filter === "debt" ? "Umumiy Qarzi" : "Umumiy To'lov",
       key: "totaldebt",
       render: (_, record) => (
         <p>
-          {record.paymentAmount?.toLocaleString() || "Ma'lumot topilmadi"} so'm
+          {record.paymentAmount?.toLocaleString() || "Ma'lumot topilmadi"}{" "}
+          {record.currency === "sum" ? "so'm" : "$"} {/* Display currency symbol */}
           {filter === "debt" && record.paymentAmount && (
             <span style={{ color: "red" }}>
               {" "}
               (Qolgan: {(
                 record.paymentAmount - (record.paidAmount || 0)
-              )?.toLocaleString()} so'm)
+              )?.toLocaleString()}{" "}
+              {record.currency === "sum" ? "so'm" : "$"}) {/* Display currency symbol */}
             </span>
           )}
         </p>
