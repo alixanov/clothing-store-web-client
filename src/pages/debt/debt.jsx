@@ -90,7 +90,7 @@ export default function Debt() {
     const amount = paymentAmount[id];
     if (amount) {
       axios
-        .post(`https://clothing-store-web-server.vercel.app/api/payment`, {
+        .post(`https://stomatology-web-server.vercel.app/api/payment`, {
           userId: id,
           amount: parseFloat(amount),
         })
@@ -114,7 +114,7 @@ export default function Debt() {
   };
 
   const refreshSoldData = () => {
-    let url = "https://clothing-store-web-server.vercel.app/api/sold";
+    let url = "https://stomatology-web-server.vercel.app/api/sold";
     if (filter === "debt") {
       url += "?debt=true";
     }

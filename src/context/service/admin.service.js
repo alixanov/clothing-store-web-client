@@ -2,9 +2,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
-  // baseUrl: "https://kiyim-kechak-server.vercel.app/",
-  // baseUrl: "https://stomatologiya-crm.vercel.app/api",
-  baseUrl:"https://clothing-store-web-server.vercel.app/",
+  baseUrl:"https://stomatology-web-server.vercel.app/",
   prepareHeaders: (headers, { getState }) => {
     const token = localStorage.getItem("access_token");
     if (token) {
