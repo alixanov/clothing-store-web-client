@@ -33,27 +33,58 @@ export default function Debt() {
       title: "Ismi",
       dataIndex: "fullname",
       key: "fullname",
+      render: (text) => text || "Ma'lumot topilmadi", // Display default message if empty
     },
     {
       title: "Manzili",
       dataIndex: "address",
       key: "address",
+      render: (text) => text || "Ma'lumot topilmadi", // Display default message if empty
     },
     {
       title: "Telefon",
       dataIndex: "phone",
       key: "phone",
+      render: (text) => text || "Ma'lumot topilmadi", // Display default message if empty
+    },
+    {
+      title: "Sotilgan Mahsulotlar",
+      key: "products",
+      render: (_, record) => (
+        <div>
+          {record.totalProduct?.length > 0
+            ? record.totalProduct.map((product, index) => (
+              <p key={index}>
+                {product.name} - {product.quantity} ta
+              </p>
+            ))
+            : "Ma'lumot topilmadi"}
+        </div>
+      ),
     },
     {
       title: filter === "debt" ? "Umumiy Qarzi" : "Umumiy To'lov",
       key: "totaldebt",
-      render: (_, record) => <p>{record.paymentAmount}</p>,
+      render: (_, record) => (
+        <p>
+          {record.paymentAmount?.toLocaleString() || "Ma'lumot topilmadi"} so'm
+          {filter === "debt" && record.paymentAmount && (
+            <span style={{ color: "red" }}>
+              {" "}
+              (Qolgan: {(
+                record.paymentAmount - (record.paidAmount || 0)
+              )?.toLocaleString()} so'm)
+            </span>
+          )}
+        </p>
+      ),
     },
     {
       title: "Sanasi",
       dataIndex: "updatedAt",
       key: "updatedAt",
-      render: (text) => moment(text).format("YYYY,MM,DD HH:mm"),
+      render: (text) =>
+        text ? moment(text).format("YYYY,MM,DD HH:mm") : "Ma'lumot topilmadi",
     },
     {
       title: filter === "debt" ? "To'lovni kiritish" : "",
@@ -78,6 +109,7 @@ export default function Debt() {
         ),
     },
   ];
+
 
   const handleInputChange = (e, id) => {
     setPaymentAmount({
@@ -153,7 +185,14 @@ export default function Debt() {
         />
       </div>
 
-      <Table columns={columns} dataSource={filteredSold} rowKey={"_id"} />
+      <Table
+        columns={columns}
+        dataSource={filteredSold}
+        rowKey={"_id"}
+        locale={{
+          emptyText: "Ma'lumot topilmadi", // Custom empty text
+        }}
+      />
     </div>
   );
 }

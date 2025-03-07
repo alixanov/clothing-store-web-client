@@ -40,9 +40,12 @@ export const Admin = () => {
   const [editingItem, setEditingItem] = useState(null);
   const brCodeRef = useRef();
   const nameRef = useRef();
-  const purchasePriceRef = useRef();
-  const middlePriceRef = useRef();
-  const sellingPriceRef = useRef();
+  const purchasePriceSumRef = useRef(); // Added
+  const purchasePriceDollarRef = useRef(); // Added
+  const middlePriceSumRef = useRef(); // Added
+  const middlePriceDollarRef = useRef(); // Added
+  const sellingPriceSumRef = useRef(); // Added
+  const sellingPriceDollarRef = useRef(); // Added
   const quantityRef = useRef();
   const categoryRef = useRef();
   const navigate = useNavigate();
@@ -90,9 +93,12 @@ export const Admin = () => {
     const data = {
       brCode: brCodeRef.current.value,
       name: nameRef.current.value,
-      purchasePrice: parseFloat(purchasePriceRef.current.value),
-      middlePrice: parseFloat(middlePriceRef.current.value),
-      sellingPrice: parseFloat(sellingPriceRef.current.value),
+      purchasePriceSum: parseFloat(purchasePriceSumRef.current.value), // Use parseFloat
+      purchasePriceDollar: parseFloat(purchasePriceDollarRef.current.value), // Use parseFloat
+      middlePriceSum: parseFloat(middlePriceSumRef.current.value), // Use parseFloat
+      middlePriceDollar: parseFloat(middlePriceDollarRef.current.value), // Use parseFloat
+      sellingPriceSum: parseFloat(sellingPriceSumRef.current.value), // Use parseFloat
+      sellingPriceDollar: parseFloat(sellingPriceDollarRef.current.value), // Use parseFloat
       quantity: parseFloat(quantityRef.current.value),
       category: categoryRef.current.value,
       artikul: new Date(),
@@ -158,9 +164,15 @@ export const Admin = () => {
     toggleBarcodeModal(false);
   };
 
-  const totalProfit = products.reduce((acc, product) => {
+  const totalProfitSum = products.reduce((acc, product) => {
     return (
-      acc + (product.sellingPrice - product.purchasePrice) * product.quantity
+      acc + (product.sellingPriceSum - product.purchasePriceSum) * product.quantity
+    );
+  }, 0);
+
+  const totalProfitDollar = products.reduce((acc, product) => {
+    return (
+      acc + (product.sellingPriceDollar - product.purchasePriceDollar) * product.quantity
     );
   }, 0);
 
@@ -194,9 +206,12 @@ export const Admin = () => {
               <th>№</th>
               <th>Barcode</th>
               <th>Mahsulot nomi</th>
-              <th>Kelgan narxi</th>
-              <th>Minimal narxi</th>
-              <th>Sotish narxi</th>
+              <th>Kelgan narxi (Sum)</th>
+              <th>Kelgan narxi ($)</th>
+              <th>Minimal narxi (Sum)</th>
+              <th>Minimal narxi ($)</th>
+              <th>Sotish narxi (Sum)</th>
+              <th>Sotish narxi ($)</th>
               <th>Foyda</th>
               <th>Kirim soni</th>
               <th>Kategoriya</th>
@@ -207,22 +222,23 @@ export const Admin = () => {
           <tbody>
             {filteredProducts.map((product, index) => (
               <tr
-                style={
-                  product.quantity < 6 ? { backgroundColor: "#FFCCE5" } : {}
-                }
+                style={product.quantity < 6 ? { backgroundColor: "#FFCCE5" } : {}}
                 key={product?._id}
               >
                 <td>{index + 1}</td>
                 <td>{product?.brCode}</td>
                 <td>{product?.name}</td>
-                <td>{product?.purchasePrice.toLocaleString()} so'm</td>
-                <td>{product?.middlePrice.toLocaleString()} so'm</td>
-                <td>{product?.sellingPrice.toLocaleString()} so'm</td>
+                <td>{product?.purchasePriceSum?.toLocaleString(undefined, { minimumFractionDigits: 2 })} so'm</td>
+                <td>{product?.purchasePriceDollar?.toLocaleString(undefined, { minimumFractionDigits: 2 })} $</td>
+                <td>{product?.middlePriceSum?.toLocaleString(undefined, { minimumFractionDigits: 2 })} so'm</td>
+                <td>{product?.middlePriceDollar?.toLocaleString(undefined, { minimumFractionDigits: 2 })} $</td>
+                <td>{product?.sellingPriceSum?.toLocaleString(undefined, { minimumFractionDigits: 2 })} so'm</td>
+                <td>{product?.sellingPriceDollar?.toLocaleString(undefined, { minimumFractionDigits: 2 })} $</td>
                 <td>
                   {(
-                    (product?.sellingPrice - product?.purchasePrice) *
+                    (product?.sellingPriceSum - product?.purchasePriceSum) *
                     product?.quantity
-                  ).toLocaleString()}{" "}
+                  )?.toLocaleString() || "0"}{" "}
                   so'm
                 </td>
                 <td>{product?.quantity}</td>
@@ -254,9 +270,14 @@ export const Admin = () => {
           </tbody>
         </Table>
         <div className="totalprice">
-          <span>
-            Umumiy foyda: <b>{totalProfit.toLocaleString()}</b> so'm
-          </span>
+          <div className="totalprice">
+            <span>
+              Umumiy foyda (Sum): <b>{totalProfitSum.toLocaleString()}</b> so'm
+            </span>
+            <span>
+              Umumiy foyda ($): <b>{totalProfitDollar.toLocaleString()}</b> $
+            </span>
+          </div>
         </div>
       </div>
 
@@ -294,36 +315,68 @@ export const Admin = () => {
                   autoComplete="off"
                 />
               </label>
+
               <label>
-                <span>Kelgan narxi</span>
+                <span>Kelgan narxi (Sum)</span>
                 <input
-                  ref={purchasePriceRef}
-                  defaultValue={editingItem ? editingItem.purchasePrice : ""}
+                  ref={purchasePriceSumRef}
+                  defaultValue={editingItem ? editingItem.purchasePriceSum : ""}
                   required
-                  type="number"
+                  type="text" // Changed from "number" to "text"
                   autoComplete="off"
                 />
               </label>
               <label>
-                <span>Minimal narxi</span>
+                <span>Kelgan narxi ($)</span>
                 <input
-                  ref={middlePriceRef}
-                  defaultValue={editingItem ? editingItem.middlePrice : ""}
+                  ref={purchasePriceDollarRef}
+                  defaultValue={editingItem ? editingItem.purchasePriceDollar : ""}
                   required
-                  type="number"
+                  type="text" // Changed from "number" to "text"
                   autoComplete="off"
                 />
               </label>
               <label>
-                <span>Sotish narxi</span>
+                <span>Minimal narxi (Sum)</span>
                 <input
-                  ref={sellingPriceRef}
-                  defaultValue={editingItem ? editingItem.sellingPrice : ""}
+                  ref={middlePriceSumRef}
+                  defaultValue={editingItem ? editingItem.middlePriceSum : ""}
                   required
-                  type="number"
+                  type="text" // Changed from "number" to "text"
                   autoComplete="off"
                 />
               </label>
+              <label>
+                <span>Minimal narxi ($)</span>
+                <input
+                  ref={middlePriceDollarRef}
+                  defaultValue={editingItem ? editingItem.middlePriceDollar : ""}
+                  required
+                  type="text" // Changed from "number" to "text"
+                  autoComplete="off"
+                />
+              </label>
+              <label>
+                <span>Sotish narxi (Sum)</span>
+                <input
+                  ref={sellingPriceSumRef}
+                  defaultValue={editingItem ? editingItem.sellingPriceSum : ""}
+                  required
+                  type="text" // Changed from "number" to "text"
+                  autoComplete="off"
+                />
+              </label>
+              <label>
+                <span>Sotish narxi ($)</span>
+                <input
+                  ref={sellingPriceDollarRef}
+                  defaultValue={editingItem ? editingItem.sellingPriceDollar : ""}
+                  required
+                  type="text" // Changed from "number" to "text"
+                  autoComplete="off"
+                />
+              </label>
+
               <label>
                 <span>Kirim soni</span>
                 <input

@@ -14,7 +14,7 @@ export const Login = memo(() => {
 
     try {
       await axios
-        .post("https://stomatology-web-server.vercel.app/api/auth/login", value)
+        .post("https://stomatology-web-server.vercel.app/auth/login", value)
         .then((res) => {
           console.log(res);
           const token = res.data.token;
