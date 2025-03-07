@@ -212,11 +212,11 @@ const Kassa = () => {
 
     if (window.confirm("Sotuvni tasdiqlaysizmi?")) {
       axios
-        .post("https://clothing-store-web-server.vercel.app/api/sold", values)
+        .post("https://kiyim-kechak-server.vercel.app/api/sold", values)
         .then((response) => {
           basket.forEach((product) => {
             axios
-              .put(`https://clothing-store-web-server.vercel.app/api/products/${product._id}`, {
+              .put(`https://kiyim-kechak-server.vercel.app/api/products/${product._id}`, {
                 quantity: product.quantity - product.sellingQuantity,
               })
               .catch((error) => console.log(error));
